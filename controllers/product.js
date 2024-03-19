@@ -19,3 +19,31 @@ exports.list = async (req, res) => {
         res.status(500).send("Server Error list Product!!!");
     }
 };
+
+exports.update = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findOneAndUpdate(
+            { _id: id },
+            req.body,
+            { new: true }
+        ).exec();
+        res.send(product);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server error Update Product");
+    }
+};
+
+exports.remove = async (req, res) => {
+    try {
+        const deleted = await Product.findOneAndDelete(
+            { _id: req.params.id } // ใช้ findOneAndDelete แทน findOneAndRemove
+        ).exec();
+        res.send(deleted);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server error Remove Product");
+    }
+};
+
